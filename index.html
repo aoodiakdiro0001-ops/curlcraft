@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CurlCraft | CURL to Code — 10 Languages + Headers</title>
+<meta name="description" content="Paste curl, get executable code in 10 languages. Header extractor, sponsors, free.">
+<link rel="canonical" href="https://aoodiakdiro0001-ops.github.io/curlcraft/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0c0f16">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CurlCraft | CURL to Code Converter">
+<meta property="og:description" content="curl → Python, JS, Go, Rust, PHP, Bash, PowerShell, Ruby, Java, C#.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Consolas,monospace}
+:root{--bg:#0c0f16;--panel:#141b31;--line:#2a3557;--grn:#34d399;--blu:#60a5fa;--ylw:#fbbf24;--org:#fb923c;--txt:#dfe6f3;--mut:#8b98b8}
+body{background:var(--bg);color:var(--txt)}
+header{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.logo{font-size:22px;font-weight:900;color:var(--blu)}
+.logo small{display:block;font-size:11px;color:var(--mut);font-weight:400}
+header select{margin-left:auto;background:var(--panel);color:var(--txt);border:1px solid var(--line);border-radius:14px;padding:7px 10px;font-size:13px}
+.tabs{display:flex;gap:6px;padding:14px 16px 0;flex-wrap:wrap;max-width:1100px;margin:0 auto}
+.tabs button{background:var(--panel);color:var(--txt);border:1px solid var(--line);border-bottom:none;padding:10px 16px;border-radius:12px 12px 0 0;cursor:pointer;font-weight:800;font-size:13px}
+.tabs button.on{background:#1b2547;color:var(--blu)}
+main{max-width:1100px;margin:0 auto;padding:18px 15px 60px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:0 14px 14px 14px;padding:22px;display:none}
+.panel.on{display:block}
+.panel h2{color:var(--blu);margin-bottom:6px;font-size:19px}
+.panel p.sub{color:var(--mut);font-size:13px;margin-bottom:12px;line-height:1.7}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center}
+textarea{width:100%;min-height:110px;background:#0c0f16;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:12px;font-family:Consolas,monospace;font-size:12.5px;direction:ltr}
+pre.out{background:#0c0f16;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:12.5px;overflow:auto;max-height:460px;direction:ltr;text-align:left;white-space:pre-wrap}
+button.go{background:var(--blu);color:#06121f;border:none;padding:10px 22px;border-radius:10px;font-weight:900;cursor:pointer;font-size:14px}
+button.alt{background:transparent;color:var(--blu);border:1px solid var(--blu);padding:9px 16px;border-radius:10px;cursor:pointer;font-size:13px}
+.langbar{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.langbar button{background:#0c0f16;color:var(--txt);border:1px solid var(--line);border-radius:16px;padding:7px 14px;cursor:pointer;font-size:12.5px;font-weight:700}
+.langbar button.on{background:var(--blu);color:#06121f;border-color:var(--blu)}
+table.pt{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+table.pt td{border-bottom:1px solid var(--line);padding:7px 8px;vertical-align:top}
+table.pt td:first-child{color:var(--blu);white-space:nowrap;font-weight:700}
+.note{background:#1b2547;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:12.5px;color:var(--mut);margin:10px 0;line-height:1.7}
+.spons{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:10px}
+.spon{background:#0c0f16;border:1px dashed var(--line);border-radius:14px;padding:20px;text-align:center;font-size:13px;color:var(--mut)}
+.spon a{color:var(--grn);font-weight:800;text-decoration:none;font-size:15px}
+.spon img{max-width:100%;max-height:60px;border-radius:8px}
+.donate{background:linear-gradient(135deg,#1b2547,#0e2a1d);border:1px solid var(--grn);border-radius:16px;padding:20px;text-align:center;margin-top:8px;font-size:13px}
+.donate .addr{background:#0c0f16;border-radius:10px;padding:10px;font-family:monospace;font-size:12px;word-break:break-all;direction:ltr;margin:6px auto;color:var(--grn);max-width:560px}
+.adslot{max-width:1100px;margin:12px auto 0;padding:0 15px;text-align:center}
+.adslot .ph{display:block;border:1px dashed var(--line);border-radius:10px;color:var(--mut);font-size:12px;padding:10px}
+footer{text-align:center;color:var(--mut);font-size:12.5px;padding:26px 16px;border-top:1px solid var(--line);line-height:2}
+footer a{color:var(--grn)}
+#toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:12px 25px;border-radius:25px;z-index:200;display:none;font-size:14px;max-width:92vw;text-align:center}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">🌀 CurlCraft<small data-i="tag"></small></div>
+<select id="langSel" onchange="setLang(this.value)">
+<option value="en" selected>🇬🇧 English</option><option value="tr">🇹🇷 Türkçe</option><option value="ar">🇸🇦 العربية</option>
+</select>
+</header>
+<div class="tabs" id="tabs"></div>
+<main>
+<section class="panel on" id="p-conv">
+<h2 data-i="cT"></h2><p class="sub" data-i="cS"></p>
+<textarea id="curlIn" rows="5" placeholder="curl -X POST https://api.example.com/v1/items -H 'Content-Type: application/json' -d '{&quot;name&quot;:&quot;x&quot;}'"></textarea>
+<div class="row"><button class="go" onclick="convert()" data-i="btnConv"></button><button class="alt" onclick="loadSample()" data-i="btnSample"></button></div>
+<div class="langbar" id="langBar"></div>
+<pre class="out" id="codeOut"></pre>
+<div class="row"><button class="alt" onclick="copyTxt(document.getElementById('codeOut').textContent)" data-i="btnCopy"></button><button class="alt" onclick="dlCode()" data-i="btnDl"></button></div>
+</section>
+<section class="panel" id="p-headers">
+<h2 data-i="hT"></h2><p class="sub" data-i="hS"></p>
+<div class="row"><button class="go" onclick="showHeaders()" data-i="btnShow"></button><button class="alt" onclick="copyTxt(headersJSON())" data-i="btnCopyJson"></button></div>
+<div id="hdrOut"></div>
+</section>
+<section class="panel" id="p-spons">
+<h2 data-i="spT"></h2><p class="sub" data-i="spS"></p>
+<div class="spons" id="sponsGrid"></div>
+</section>
+<section class="panel" id="p-donate">
+<h2 data-i="doT"></h2><p class="sub" data-i="doS"></p>
+<div class="donate">
+<div>₿ BTC</div><div class="addr" id="btcA"></div>
+<div>₮ USDT-TRC20</div><div class="addr" id="usdtA"></div>
+<div class="row" style="justify-content:center"><button class="alt" onclick="copyTxt(document.getElementById('btcA').textContent)" data-i="btnCopy"></button></div>
+<div style="font-size:12.5px">🏦 Baran Avisat — TRY: <code dir="ltr">TR10 0001 0090 1008 4013 0050 01</code></div>
+<div style="font-size:12.5px">🏦 Baran Avisat — USD: <code dir="ltr">TR80 0001 0090 1008 4013 0050 02</code></div>
+</div>
+</section>
+</main>
+<div class="adslot" id="adFoot"><span class="ph" data-i="adHere" style="display:block;border:1px dashed var(--line);border-radius:10px;color:var(--mut);font-size:12px;padding:10px"></span></div>
+<footer><span data-i="foot"></span><br>📧 <a href="mailto:baranavisat@gmail.com">baranavisat@gmail.com</a> · 📞 <a href="tel:+905313263722" dir="ltr">+90 531 326 37 22</a> · <a href="https://wa.me/905313263722" target="_blank" rel="noopener">WhatsApp</a><br><a href="README.md" target="_blank">README</a> · MIT</footer>
+<div id="toast"></div>
+<script>
+const CONFIG={ads:{client:'',slot:'',carbonServe:'',carbonPlacement:''},
+pay:{btc:'bc1q8dhtdrndxsl70e97t8grydfe6pjue37zrhzf6c',usdt:'TLWdTjqqogkXNEXGiPWsGdjFP6ioycxeWW'},
+sponsors:[]};
+const LANGS=[['python','Python'],['js','JavaScript'],['go','Go'],['rust','Rust'],['php','PHP'],['bash','Bash'],['ps','PowerShell'],['ruby','Ruby'],['java','Java'],['cs','C#']];
+const T={
+en:{tag:'curl → code in 10 languages',tabC:'🌀 Converter',tabH:'🧾 Headers',tabS:'🤝 Sponsors',tabDo:'💚 Donate',
+cT:'🌀 CURL to Code',cS:'Paste any curl command — get runnable code in 10 languages. All parsing happens locally.',
+btnConv:'Convert',btnSample:'Load sample',btnCopy:'Copy',btnDl:'Download',
+hT:'🧾 Header Extractor',hS:'Headers parsed from your curl, formatted as table + JSON.',
+btnShow:'Extract headers',btnCopyJson:'Copy JSON',
+spT:'🤝 Sponsors',spS:'Hosting & API-gateway sponsors keep CurlCraft free. Your logo here:',
+doT:'💚 Support CurlCraft',doS:'Free forever. Donations fund new languages and parsers.',
+adHere:'Dev-tool ads here',foot:'CurlCraft — free converter. Verify generated code before production use.',
+copied:'Copied ✅',needCurl:'Paste a curl command first ⚠️',dlDone:'Downloaded ✅'},
+tr:{tag:'curl → 10 dilde kod',tabC:'🌀 Dönüştürücü',tabH:'🧾 Başlıklar',tabS:'🤝 Sponsorlar',tabDo:'💚 Destek',
+cT:'🌀 CURL → Kod',cS:'curl komutunu yapıştırın — 10 dilde çalışır kod alın. Ayrıştırma yerelde olur.',
+btnConv:'Dönüştür',btnSample:'Örnek yükle',btnCopy:'Kopyala',btnDl:'İndir',
+hT:'🧾 Başlık Çıkarıcı',hS:'curl\u2019unuzdaki başlıklar tablo + JSON olarak.',
+btnShow:'Başlıkları çıkar',btnCopyJson:'JSON kopyala',
+spT:'🤝 Sponsorlar',spS:'Hosting & API-gateway sponsorları CurlCraft\u2019ı ücretsiz tutar. Logonuz burada:',
+doT:'💚 Destekle',doS:'Sonsuza dek ücretsiz. Bağışlar yeni diller getirir.',
+adHere:'Reklamınız burada',foot:'CurlCraft — ücretsiz dönüştürücü. Kodu üretim öncesi doğrulayın.',
+copied:'Kopyalandı ✅',needCurl:'Önce curl yapıştırın ⚠️',dlDone:'İndirildi ✅'},
+ar:{tag:'curl ← كود بعشر لغات',tabC:'🌀 المحوّل',tabH:'🧾 الترويسات',tabS:'🤝 رعاة',tabDo:'💚 ادعم',
+cT:'🌀 CURL إلى كود',cS:'الصق أي أمر curl — واحصل على كود بعشر لغات. التحليل محلي.',
+btnConv:'حوّل',btnSample:'مثال',btnCopy:'نسخ',btnDl:'تنزيل',
+hT:'🧾 مستخرج الترويسات',hS:'ترويسات curl كجدول + JSON.',
+btnShow:'استخرج',btnCopyJson:'نسخ JSON',
+spT:'🤝 الرعاة',spS:'رعاة الاستضافة والبوابات يبقونه مجانياً. شعارك هنا:',
+doT:'💚 ادعم CurlCraft',doS:'مجاني للأبد. التبرعات تجلب لغات جديدة.',
+adHere:'مساحتك الإعلانية هنا',foot:'CurlCraft — محوّل مجاني. تحقق من الكود قبل الإنتاج.',
+copied:'تم ✅',needCurl:'الصق أمر curl أولاً ⚠️',dlDone:'نُزّل ✅'}};
+let lang='en';
+const t=k=>(T[lang]&&T[lang][k])||T.en[k]||k;
+function setLang(v){lang=v;document.documentElement.lang=v;document.documentElement.dir=(v==='ar')?'rtl':'ltr';document.getElementById('langSel').value=v;
+document.querySelectorAll('[data-i]').forEach(e=>{e.textContent=t(e.dataset.i);});
+buildTabs();buildLangs();renderSpons();renderDonate();}
+const TABS=[['conv','tabC'],['headers','tabH'],['spons','tabS'],['donate','tabDo']];
+function buildTabs(){document.getElementById('tabs').innerHTML=TABS.map(x=>`<button id="tab-${x[0]}" onclick="tab('${x[0]}')">${t(x[1])}</button>`).join('');document.getElementById('tab-conv').classList.add('on');}
+function tab(w){TABS.forEach(x=>{const b=document.getElementById('tab-'+x[0]);if(b)b.classList.toggle('on',w===x[0]);document.getElementById('p-'+x[0]).classList.toggle('on',w===x[0]);});}
+function toast(m){let d=document.getElementById('toast');d.textContent=m;d.style.display='block';clearTimeout(d._h);d._h=setTimeout(()=>d.style.display='none',2200);}
+function copyTxt(x){try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(x);}catch(e){}toast(t('copied'));}
+function tokenize(cmd){
+cmd=String(cmd||'').replace(/\\\r?\n/g,' ');
+const out=[];let cur='',q=null,esc=false;
+for(const ch of cmd){
+if(esc){cur+=ch;esc=false;continue;}
+if(ch==='\\'){esc=true;continue;}
+if(q){if(ch===q)q=null;else cur+=ch;}
+else if(ch==='"'||ch==="'")q=ch;
+else if(/\s/.test(ch)){if(cur){out.push(cur);cur='';}}
+else cur+=ch;}
+if(cur)out.push(cur);
+return out;
+}
+function parseCurl(cmd){
+const tk=tokenize(cmd);
+let i=0;if(tk[0]==='curl')i=1;
+const o={method:'GET',url:'',headers:[],data:[],auth:null,insecure:false,follow:false,ua:'',proxy:'',timeout:'',compressed:false,cookies:[],get:false};
+const next=()=>tk[++i]||'';
+for(;i<tk.length;i++){const a=tk[i];
+if(a==='-X'||a==='--request')o.method=next().toUpperCase();
+else if(a==='-H'||a==='--header'){const h=next(),j=h.indexOf(':');if(j>0)o.headers.push([h.slice(0,j).trim(),h.slice(j+1).trim()]);}
+else if(['-d','--data','--data-raw','--data-binary','--data-ascii','--data-urlencode'].includes(a))o.data.push(next());
+else if(a==='--json'){const d=next();o.data.push(d);if(!o.headers.some(h=>h[0].toLowerCase()==='content-type'))o.headers.push(['Content-Type','application/json']);}
+else if(a==='-G'||a==='--get')o.get=true;
+else if(a==='-u'||a==='--user')o.auth=next();
+else if(a==='-A'||a==='--user-agent')o.ua=next();
+else if(a==='-x'||a==='--proxy')o.proxy=next();
+else if(a==='-m'||a==='--max-time')o.timeout=next();
+else if(a==='-k'||a==='--insecure')o.insecure=true;
+else if(a==='-L'||a==='--location')o.follow=true;
+else if(a==='--compressed')o.compressed=true;
+else if(a==='-b'||a==='--cookie')o.cookies.push(next());
+else if(a==='--url')o.url=next();
+else if(a==='-o'||a==='-O'||a==='-c'||a==='-s'||a==='-S'||a==='-v'||a==='-i'||a==='-sS') {if(['-o','-c'].includes(a))i++;}
+else if(!a.startsWith('-')&&!o.url)o.url=a;
+}
+if(o.data.length&&o.method==='GET'&&!o.get)o.method='POST';
+if(o.get&&o.data.length){const q=o.data.join('&');o.url+=(o.url.includes('?')?'&':'?')+q;o.data=[];}
+return o;
+}
+const q1=s=>"'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"'\\''")+"'";
+const dq=s=>'"'+String(s).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"';
+const js=s=>JSON.stringify(String(s));
+function hdrLines(o,fmt){
+return o.headers.map(h=>fmt(h[0],h[1]));
+}
+function bodyOf(o){return o.data.join('&');}
+function genPython(o){
+let s='import requests\n\nurl = '+js(o.url)+'\n';
+if(o.headers.length){s+='headers = {\n'+o.headers.map(h=>'    '+js(h[0])+': '+js(h[1])).join(',\n')+'\n}\n';}
+const b=bodyOf(o);
+if(b)s+='payload = '+js(b)+'\n';
+const args=["'"+o.method+"'"+', url'];
+if(o.headers.length)args.push('headers=headers');
+if(b)args.push('data=payload');
+if(o.auth){const u=o.auth.split(':');args.push('auth='+js(u[0])+', '+js(u.slice(1).join(':')||''));}
+if(o.insecure)args.push('verify=False');
+if(o.timeout)args.push('timeout='+o.timeout);
+s+='\nresponse = requests.request('+args.join(', ')+')\nprint(response.status_code)\nprint(response.text)\n';
+return s;
+}
+function genJS(o){
+let s=`const url = ${js(o.url)};\n`;
+if(o.headers.length)s+=`const headers = {\n`+o.headers.map(h=>`  ${js(h[0])}: ${js(h[1])}`).join(',\n')+`\n};\n`;
+const b=bodyOf(o);
+s+=`const options = {\n  method: '${o.method}'${o.headers.length?',\n  headers':''}${b?',\n  body: '+js(b):''}${o.follow?',\n  redirect: \'follow\'':''}\n};\n`;
+s+=`fetch(url, options)\n  .then(r => r.text().then(t => console.log(r.status, t)))\n  .catch(console.error);\n`;
+return s;
+}
+function genGo(o){
+const b=bodyOf(o);
+let s='package main\n\nimport (\n\t"fmt"\n\t"io"\n\t"net/http"\n\t"strings"\n)\n\nfunc main() {\n';
+s+=`\turl := ${js(o.url)}\n`;
+s+=b?`\tpayload := strings.NewReader(${js(b)})\n`:`\tpayload := strings.NewReader("")\n`;
+s+=`\treq, err := http.NewRequest("${o.method}", url, payload)\n\tif err != nil { panic(err) }\n`;
+o.headers.forEach(h=>{s+=`\treq.Header.Add(${js(h[0])}, ${js(h[1])})\n`;});
+if(o.auth){const u=o.auth.split(':');s+=`\treq.SetBasicAuth(${js(u[0])}, ${js(u.slice(1).join(':')||'')})\n`;}
+s+=`\tres, err := http.DefaultClient.Do(req)\n\tif err != nil { panic(err) }\n\tdefer res.Body.Close()\n\tbody, _ := io.ReadAll(res.Body)\n\tfmt.Println(res.Status, string(body))\n}\n`;
+return s;
+}
+function genRust(o){
+const b=bodyOf(o);
+let s=`fn main() -> Result<(), Box<dyn std::error::Error>> {\n    let client = reqwest::blocking::Client::new();\n    let mut req = client.request(reqwest::Method::${o.method}, ${js(o.url)});\n`;
+o.headers.forEach(h=>{s+=`    req = req.header(${js(h[0])}, ${js(h[1])});\n`;});
+if(b)s+=`    req = req.body(${js(b)});\n`;
+if(o.auth){const u=o.auth.split(':');s+=`    req = req.basic_auth(${js(u[0])}, Some(${js(u.slice(1).join(':')||'')}));\n`;}
+s+=`    let res = req.send()?;\n    println!("{} {}", res.status(), res.text()?);\n    Ok(())\n}\n// Cargo: reqwest = { version = "0.12", features = ["blocking"] }\n`;
+return s;
+}
+function genPHP(o){
+const b=bodyOf(o);
+let s=`<?php\n$ch = curl_init(${js(o.url)});\n`;
+s+=`curl_setopt($ch, CURLOPT_CUSTOMREQUEST, '${o.method}');\n`;
+if(o.headers.length)s+=`curl_setopt($ch, CURLOPT_HTTPHEADER, [\n`+o.headers.map(h=>`    ${js(h[0]+': '+h[1])}`).join(',\n')+`\n]);\n`;
+if(b)s+=`curl_setopt($ch, CURLOPT_POSTFIELDS, ${js(b)});\n`;
+if(o.auth)s+=`curl_setopt($ch, CURLOPT_USERPWD, ${js(o.auth)});\n`;
+if(o.follow)s+=`curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);\n`;
+if(o.insecure)s+=`curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);\n`;
+if(o.timeout)s+=`curl_setopt($ch, CURLOPT_TIMEOUT, ${(parseInt(o.timeout)||0)});\n`;
+if(o.ua)s+=`curl_setopt($ch, CURLOPT_USERAGENT, ${js(o.ua)});\n`;
+if(o.proxy)s+=`curl_setopt($ch, CURLOPT_PROXY, ${js(o.proxy)});\n`;
+s+=`curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\n$res = curl_exec($ch);\necho $res;\ncurl_close($ch);\n`;
+return s;
+}
+function genBash(o){
+let s=`curl -X ${o.method} ${q1(o.url)}`;
+o.headers.forEach(h=>{s+=` \\\n  -H ${q1(h[0]+': '+h[1])}`;});
+if(bodyOf(o))s+=` \\\n  -d ${q1(bodyOf(o))}`;
+if(o.auth)s+=` \\\n  -u ${q1(o.auth)}`;
+if(o.follow)s+=` -L`;if(o.insecure)s+=` -k`;if(o.compressed)s+=` --compressed`;
+if(o.ua)s+=` -A ${q1(o.ua)}`;if(o.proxy)s+=` -x ${q1(o.proxy)}`;if(o.timeout)s+=` -m ${q1(o.timeout)}`;
+return s+'\n';
+}
+function genPS(o){
+const b=bodyOf(o);
+let s=`$headers = @{\n`+o.headers.map(h=>`    ${js(h[0])} = ${js(h[1])}`).join('\n')+`\n}\n`;
+s+=`Invoke-RestMethod -Uri ${js(o.url)} -Method ${o.method}`;
+if(o.headers.length)s+=` -Headers $headers`;
+if(b)s+=` -Body ${js(b)}`;
+if(o.auth){const u=o.auth.split(':');s+=` -Credential (New-Object PSCredential(${js(u[0])}, (ConvertTo-SecureString ${js(u.slice(1).join(':')||'')} -AsPlainText -Force)))`;}
+return s+'\n';
+}
+function genRuby(o){
+const b=bodyOf(o);
+let s=`require 'net/http'\nrequire 'uri'\n\nuri = URI(${js(o.url)})\n`;
+s+=`req = Net::HTTP::${cap(o.method.toLowerCase())}.new(uri)\n`;
+o.headers.forEach(h=>{s+=`req['${h[0].replace(/'/g,"\\'")}'] = ${js(h[1])}\n`;});
+if(b)s+=`req.body = ${js(b)}\n`;
+if(o.auth){const u=o.auth.split(':');s+=`req.basic_auth ${js(u[0])}, ${js(u.slice(1).join(':')||'')}\n`;}
+s+=`\nres = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') { |http| http.request(req) }\nputs res.code\nputs res.body\n`;
+return s;
+}
+function genJava(o){
+const b=bodyOf(o);
+let s=`import java.net.URI;\nimport java.net.http.*;\n\npublic class Req {\n  public static void main(String[] a) throws Exception {\n    HttpClient c = HttpClient.newBuilder()${o.follow?'.followRedirects(HttpClient.Redirect.ALWAYS)':''}.build();\n`;
+s+=`    HttpRequest.Builder b = HttpRequest.newBuilder().uri(URI.create(${js(o.url)}));\n`;
+o.headers.forEach(h=>{s+=`    b.header(${js(h[0])}, ${js(h[1])});\n`;});
+if(o.auth){const u=o.auth.split(':');const cred=btoa2(u[0]+':'+u.slice(1).join(':'));s+=`    b.header("Authorization", "Basic ${cred}");\n`;}
+s+=b?`    b.method("${o.method}", HttpRequest.BodyPublishers.ofString(${js(b)}));\n`:`    b.method("${o.method}", HttpRequest.BodyPublishers.noBody());\n`;
+s+=`    var r = c.send(b.build(), HttpResponse.BodyHandlers.ofString());\n    System.out.println(r.statusCode() + " " + r.body());\n  }\n}\n`;
+return s;
+}
+function btoa2(s){try{return btoa(unescape(encodeURIComponent(s)));}catch(e){return '';}}
+function genCS(o){
+const b=bodyOf(o);
+let s=`using System.Net.Http;\nusing System.Net.Http.Headers;\n\nvar client = new HttpClient();\n`;
+s+=`var req = new HttpRequestMessage(HttpMethod.${cap(o.method.toLowerCase())}, ${js(o.url)});\n`;
+o.headers.forEach(h=>{const k=h[0].toLowerCase();if(['content-type','content-length','user-agent','authorization','accept'].includes(k))return;s+=`req.Headers.TryAddWithoutValidation(${js(h[0])}, ${js(h[1])});\n`;});
+const ct=(o.headers.find(h=>h[0].toLowerCase()==='content-type')||[])[1]||'application/x-www-form-urlencoded';
+if(b)s+=`req.Content = new StringContent(${js(b)}, System.Text.Encoding.UTF8, ${js(ct)});\n`;
+if(o.auth){const u=o.auth.split(':');s+=`req.Headers.Authorization = new AuthenticationHeaderValue("Basic", "${btoa2(u[0]+':'+u.slice(1).join(':'))}");\n`;}
+s+=`var res = await client.SendAsync(req);\nConsole.WriteLine((int)res.StatusCode + " " + await res.Content.ReadAsStringAsync());\n`;
+return s;
+}
+function cap(s){return s?s[0].toUpperCase()+s.slice(1):s;}
+const GEN={python:genPython,js:genJS,go:genGo,rust:genRust,php:genPHP,bash:genBash,ps:genPS,ruby:genRuby,java:genJava,cs:genCS};
+const EXT={python:'py',js:'js',go:'go',rust:'rs',php:'php',bash:'sh',ps:'ps1',ruby:'rb',java:'java',cs:'cs'};
+let curLang='python',curReq=null;
+function buildLangs(){document.getElementById('langBar').innerHTML=LANGS.map(x=>`<button id="lb-${x[0]}" onclick="setCodeLang('${x[0]}')">${x[1]}</button>`).join('');setCodeLang('python');}
+function setCodeLang(k){curLang=k;LANGS.forEach(x=>{const b=document.getElementById('lb-'+x[0]);if(b)b.classList.toggle('on',x[0]===k);});paintCode();}
+function paintCode(){if(!curReq){document.getElementById('codeOut').textContent='';return;}
+document.getElementById('codeOut').textContent=GEN[curLang](curReq);}
+function convert(){
+const raw=document.getElementById('curlIn').value;
+if(!raw.trim()){toast(t('needCurl'));return;}
+curReq=parseCurl(raw);paintCode();
+}
+function loadSample(){document.getElementById('curlIn').value=`curl -X POST https://api.example.com/v1/items -H 'Content-Type: application/json' -H 'Authorization: Bearer abc123' -d '{"name":"x","tags":["a","b"]}' -u 'user:p@ss' --compressed -m 20`;convert();}
+function dlCode(){const c=document.getElementById('codeOut').textContent;if(!c.trim())return;const b=new Blob([c],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='request.'+(EXT[curLang]||'txt');a.click();toast(t('dlDone'));}
+function showHeaders(){
+const raw=document.getElementById('curlIn').value;
+if(!raw.trim()){toast(t('needCurl'));return;}
+const o=parseCurl(raw);curReq=o;paintCode();
+document.getElementById('hdrOut').innerHTML=o.headers.length?`<table class="pt">${o.headers.map(h=>`<tr><td>${h[0]}</td><td class="mono">${h[1]}</td></tr>`).join('')}</table>`:'—';
+}
+function headersJSON(){if(!curReq)return '{}';const o={};curReq.headers.forEach(h=>{o[h[0]]=h[1];});return JSON.stringify(o,null,2);}
+function renderSpons(){
+const S=CONFIG.sponsors||[];
+document.getElementById('sponsGrid').innerHTML=S.length?S.map(s=>`<div class="spon">${s.img?`<img src="${s.img}" alt="">`:''}<br><a target="_blank" rel="noopener" href="${s.url}">${s.name}</a><br><small>${s.desc||''}</small></div>`).join(''):`<div class="spon">🏢 <b>Hosting</b><br>Your logo here</div><div class="spon">🌐 <b>API Gateway</b><br>Your logo here</div><div class="spon">☁️ <b>Cloud</b><br>Your logo here</div>`;
+}
+function renderDonate(){
+document.getElementById('btcA').textContent=CONFIG.pay.btc;
+document.getElementById('usdtA').textContent=CONFIG.pay.usdt;
+}
+function loadAds(){const A=CONFIG.ads,el=document.getElementById('adFoot');if(!el)return;
+if(A.client){el.innerHTML='<ins class="adsbygoogle" style="display:block" data-ad-client="'+A.client+'" data-ad-slot="'+(A.slot||'')+'" data-ad-format="auto"></ins>';
+if(!document.querySelector('script[src*="adsbygoogle"]')){const s=document.createElement('script');s.async=true;s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+A.client;s.crossOrigin='anonymous';document.head.appendChild(s);}try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}}
+else if(A.carbonServe){el.innerHTML='';const s=document.createElement('script');s.async=true;s.id='_carbonads_js';s.src='//cdn.carbonads.com/carbon.js?serve='+A.carbonServe+'&placement='+A.carbonPlacement;el.appendChild(s);}}
+setLang('en');loadAds();renderDonate();
+</script>
+</body>
+</html>
